@@ -21,7 +21,7 @@ class Episode(db.Model, SerializerMixin):
         return episode_dict
 
 class Guest(db.Model, SerializerMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String)
     occupation = db.Column(db.String)
     appearances = db.relationship('Appearance', backref='guest', cascade='all, delete')
@@ -44,6 +44,14 @@ class Appearance(db.Model, SerializerMixin):
     def to_dict(self, include_details=False):
         appearance_dict = super().to_dict()
         if include_details:
-            appearance_dict["guest"] = self.guest.to_dict()
-            appearance_dict["episode"] = self.episode.to_dict()
+            appearance_dict["guest"] = {
+            "id": self.guest.id,
+            "name": self.guest.name,
+            "occupation": self.guest.occupation
+        }
+        appearance_dict["episode"] = {
+            "id": self.episode.id,
+            "number": self.episode.number,
+            "date": self.episode.date.strftime('%m/%d/%y')
+        }
         return appearance_dict

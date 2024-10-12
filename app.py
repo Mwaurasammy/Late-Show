@@ -32,6 +32,14 @@ class EpisodeResource(Resource):
         else:
             episodes = Episode.query.all()
             return jsonify([episode.to_dict() for episode in episodes])
+    
+    def delete(self, id):
+        episode = Episode.query.get(id)
+        if episode:
+            db.session.delete(episode)
+            db.session.commit()
+            return make_response(jsonify({"message": "Episode deleted successfully"}), 200)
+        return make_response(jsonify({"error": "Episode not found"}), 404)
 
 # Guest Resource
 class GuestResource(Resource):
@@ -102,6 +110,7 @@ class AppearanceResource(Resource):
             return make_response(jsonify({"errors": ["Failed to create appearance: " + str(e)]}), 500)
 
 
+
 # Register Resources
 api.add_resource(Home, '/')
 api.add_resource(EpisodeResource, '/episodes', '/episodes/<int:id>')
@@ -109,4 +118,4 @@ api.add_resource(GuestResource, '/guests')
 api.add_resource(AppearanceResource, '/appearances')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5555)
