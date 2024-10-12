@@ -17,6 +17,7 @@ This is a Flask-based RESTful API for managing episodes, guests, and appearances
 - **GET /episodes** - List all episodes
 - **GET /episodes/:id** - Get details of a specific episode
 - **GET /guests** - List all guests
+- **DELETE /episodes/:id** - Deletes a specific episode
 - **POST /appearances** - Create a new appearance with validations
 
 ## Setup
